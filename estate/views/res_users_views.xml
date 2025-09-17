@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit the standard Users form -->
+    <record id="view_users_form_inherit_estate_properties" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.estate.properties</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <!-- Add a new tab to the notebook -->
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Properties">
+                    <field name="property_ids" context="{'default_salesperson_id': active_id}">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="state"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="bedrooms"/>
+                            <field name="garden" optional="hide"/>
+                        </tree>
+                        <form>
+                            <group>
+                                <field name="name"/>
+                                <field name="state"/>
+                                <field name="salesperson_id"/>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                                <field name="bedrooms"/>
+                                <field name="garden"/>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

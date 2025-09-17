@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 
@@ -72,3 +72,24 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.status = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Validate each payload before creating anything
+        for vals in vals_list:
+            prop = self.env["estate.property"].browse(vals["property_id"])
+            if prop.offer_ids:
+                best = max(prop.offer_ids.mapped("price"))
+                if vals.get("price", 0.0) <= best:
+                    raise UserError(
+                        _("The offer must be higher than %s") % best
+                    )
+
+        # Create all offers in one go
+        records = super().create(vals_list)
+
+        # Update related properties' state
+        for offer in records:
+            offer.property_id.state = "offer_received"
+
+        return records
