@@ -11,11 +11,14 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
 
                 <separator/>
                     <filter string="Available" name="available" domain="[('state','in',['new','offer_received'])]"/>
                     <group expand="1" string="Group By">
                         <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
+                        <filter string="Property Type" name="grp_type" context="{'group_by': 'property_type_id'}"/>
+                        <filter string="Tag" name="grp_tag" context="{'group_by': 'tag_ids'}"/>
                     </group>
             </search>
         </field>
@@ -28,6 +31,8 @@
             <list string="Properties">
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="property_type_id"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
@@ -38,7 +43,7 @@
     </record>
 
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Estate property action</field>
+        <field name="name">Estate property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
